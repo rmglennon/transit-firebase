@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Transit Schedules</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+
+    <!-- Moment.js Reference -->
+    <script src="http://momentjs.com/downloads/moment.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+      <div class="jumbotron jumbotron-fluid text-center">
+  <div class="container">
+    <h1 class="display-4">Coastal Train Schedules</h1>
+    <p class="lead">Travel by train between Los Angeles and Santa Barbara</p>
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <div id="train-table">
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Train name</th>
+      <th scope="col">Destination</th>
+      <th scope="col">Frequency (in minutes)</th>
+      <th scope="col">Next arrival</th>
+      <th scope="col">Minutes away</th>
+    </tr>
+  </thead>
+  <tbody id="table-body">
+  </tbody>
+</table>
+</div>
+
+<div id="train-inputs">
+<form>
+  <div class="form-group">
+    <label for="train-name">Train name</label>
+    <input type="text" class="form-control" id="train-name" placeholder="Surfliner 774">
+  </div>
+  <div class="form-group">
+    <label for="destination">Train destination</label>
+    <input type="text" class="form-control" id="destination" placeholder="Los Angeles">
+  </div>
+  <div class="form-group">
+    <label for="frequency">Frequency (in minutes)</label>
+    <input type="number" class="form-control" id="frequency" placeholder="182">
+  </div>
+  <div class="form-group">
+    <label for="first-train">First train of day (in 24-hour time)</label>
+    <input type="text" class="form-control" id="first-train" placeholder="09:27">
+  </div>
+  <button class="btn btn-primary" id="add-train" type="submit">Submit</button>
+</form>
+</div>
+
+
+</div>
+    <!-- JavaScript -->
+    <script src="assets/javascript/transit.js"></script>
+
+  </body>
+
+</html>
