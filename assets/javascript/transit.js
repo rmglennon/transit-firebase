@@ -52,24 +52,30 @@ $("#add-train").on("click", function() {
 
  database.ref().on("child_added", function(snapshot) {
 
- 	      // Log everything that's coming out of snapshot
+ 	    // log all the snapshot values
       console.log("snapshot name: " + snapshot.val().name);
       console.log("snapshot destination: " + snapshot.val().destination);
       console.log("snapshot frequency: " + snapshot.val().frequency);
       console.log("snapshot first train: " + snapshot.val().firstTrain);
 
-      // use moment.js to add values to train
-      // var timeFormat = ["HH:mm", "Hh:mm"];
-      // var theFirstTrain = (snapshot.val().firstTrain);
-      // var parsed = moment(theFirstTrain, timeFormat).format('LLL');
-      // console.log("parsed " + JSON.stringify(parsed));
-      var freq = snapshot.val().frequency;
-      var amtrain = snapshot.val().firstTrain;
-      // console.log(moment(amtrain, "HH:mm", true).format());
+      // use moment.js to calculate the train times
 
-      var timecalc = moment(amtrain, "HH:mm");
-      timecalc.add(freq, "m");
-      console.log(timecalc.format("HH:mm"));
+      // make variables pointing to database snapshot values for simplicity
+      var freq = snapshot.val().frequency;
+      var initialTime = snapshot.val().firstTrain;
+
+      var timeCalc = moment(initialTime, "HH:mm");
+      // timecalc.add(freq, "m");
+      //console.log(timecalc.format("HH:mm"));
+
+      // create a moment for the time at the end of the day
+      var endOfDay = moment("23:59", "HH:mm");
+
+      // create a loop of all train times during the day
+      // increment by the frequency of trains
+      for (var i = timeCalc; i.isBefore(endOfDay); i.add(freq, "minutes")) {
+        console.log(i.format("HH:mm"));
+      }
 
       // var nextTrain = moment(parsed).add((snapshot.val().frequency, "m"));
       // console.log(JSON.stringify(nextTrain));
