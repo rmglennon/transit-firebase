@@ -22,9 +22,12 @@ var frequency = "";
 var firstTrain = "";
 
 
-$("#add-train").on("click", function() {
+$("#train-form").on("submit", function() {
   // avoid reloading page
 	event.preventDefault();
+  if (!validateForm()) {
+    return false;
+  }
 
   // set variable values to input captured in form
 	name = $("#train-name").val().trim();
@@ -39,13 +42,17 @@ $("#add-train").on("click", function() {
 	console.log(firstTrain);
 
   // create nodes in Firebase with variable names
-  // TODO: make these as nodes vs root?
 	database.ref().push({
 		name: name,
 		destination: destination,
 		frequency: frequency,
 		firstTrain: firstTrain
 	});
+
+  // TODO: clear out text boxes on submit
+  $("#train-form")[0].reset();
+  //document.getElementById("train-form").reset();
+  // resetForm.reset();
 
 });
 
@@ -117,10 +124,24 @@ $("#add-train").on("click", function() {
       newTableRow.append(newTableData);
       $("#table-body").append(newTableRow);
 
-      // TODO: clear out text boxes on submit
-      // name = "";
-      // destination = "";
-      // frequency = "";
-      // firstTrain = "";
-
 });
+
+function validateForm() {
+  var firstTrainTimes = $("#first-train").val().trim().split(":");
+
+  if (!validateFirstTrainTime(firstTrainTimes[0], firstTrainTimes[1])) {
+    return false;
+  }
+
+  return true;
+}
+
+function validateFirstTrainTime(hours, minutes) {
+  if (!((hours >= 00 || hours >= 0) && (hours <= 23))) {
+    return false;
+  }
+  if (!((minutes >= 00) && (minutes <= 59))) {
+    return false;
+  }
+  return true;
+}

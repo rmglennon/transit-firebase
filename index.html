@@ -46,30 +46,28 @@
 </div>
 
 <div id="train-inputs">
-<form>
+<form id="train-form">
   <div class="form-group">
     <label for="train-name">Train name</label>
-    <input type="text" class="form-control" id="train-name">
+    <input type="text" class="form-control" id="train-name" required>
   </div>
   <div class="form-group">
     <label for="destination">Train destination</label>
-    <input type="text" class="form-control" id="destination">
+    <input type="text" class="form-control" id="destination" required>
   </div>
   <div class="form-group">
     <label for="frequency">Frequency (in minutes)</label>
-    <input type="number" class="form-control" id="frequency">
+    <input type="number" class="form-control" id="frequency" required>
   </div>
   <div class="form-group">
     <label for="first-train">First train of day (in 24-hour time)</label>
-    <input type="text" class="form-control" id="first-train">
+    <input type="text" class="form-control" id="first-train" required>
   </div>
   <button class="btn btn-primary" id="add-train" type="submit">Submit</button>
 </form>
 </div>
 
-
 </div>
-    <!-- JavaScript -->
     <script src="assets/javascript/transit.js"></script>
 
   </body>
