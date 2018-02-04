@@ -38,12 +38,6 @@ $("#add-train").on("click", function() {
 	console.log(frequency);
 	console.log(firstTrain);
 
-  // clear out text boxes on entry
-  name = "";
-  destination = "";
-  frequency = "";
-  firstTrain = "";
-
   // create nodes in Firebase with variable names
   // TODO: make these as nodes vs root?
 	database.ref().push({
@@ -59,10 +53,36 @@ $("#add-train").on("click", function() {
  database.ref().on("child_added", function(snapshot) {
 
  	      // Log everything that's coming out of snapshot
-      console.log("added new child: " + snapshot.val().name);
-      console.log(snapshot.val().destination);
-      console.log(snapshot.val().frequency);
-      console.log(snapshot.val().firstTrain);
+      console.log("snapshot name: " + snapshot.val().name);
+      console.log("snapshot destination: " + snapshot.val().destination);
+      console.log("snapshot frequency: " + snapshot.val().frequency);
+      console.log("snapshot first train: " + snapshot.val().firstTrain);
+
+      // use moment.js to add values to train
+      // var timeFormat = ["HH:mm", "Hh:mm"];
+      // var theFirstTrain = (snapshot.val().firstTrain);
+      // var parsed = moment(theFirstTrain, timeFormat).format('LLL');
+      // console.log("parsed " + JSON.stringify(parsed));
+      var freq = snapshot.val().frequency;
+      var amtrain = snapshot.val().firstTrain;
+      // console.log(moment(amtrain, "HH:mm", true).format());
+
+      var timecalc = moment(amtrain, "HH:mm");
+      timecalc.add(freq, "m");
+      console.log(timecalc.format("HH:mm"));
+
+      // var nextTrain = moment(parsed).add((snapshot.val().frequency, "m"));
+      // console.log(JSON.stringify(nextTrain));
+      // console.log("i am first train: " + snapshot.val().firstTrain);
+
+      // var anotherTrain = moment(snapshot.val().firstTrain).add(20, "minutes");
+      // console.log("parsed 2: " + JSON.stringify(anotherTrain));
+
+      // var test = moment(timeString).format(timeFormat);
+      // var test2 = moment(timeInput, timeFormat);
+      // console.log(test2);
+
+      // console.log(moment(snapshot.val().firstTrain).add(snapshot.val().frequency, "minutes"));
 
       // var monthsWorked = moment().diff(moment(snapshot.val().employeeStart), "months");
       //
@@ -82,4 +102,19 @@ $("#add-train").on("click", function() {
       newTableRow.append(newTableData);
       $("#table-body").append(newTableRow);
 
+      // TODO: clear out text boxes on submit
+      // name = "";
+      // destination = "";
+      // frequency = "";
+      // firstTrain = "";
+
 });
+
+// function convertTimes() {
+//   var timeInput = (moment(snapshot.val().firstTrain, "HH:mm Z"));
+//
+//   if (timeInput.isValid) {
+//   console.log(timeInput);
+//   return timeInput;
+// }
+// }
