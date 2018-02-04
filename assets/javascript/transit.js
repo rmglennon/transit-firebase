@@ -99,6 +99,9 @@ $("#add-train").on("click", function() {
       var minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes");
       console.log(minutesAway);
 
+      var formattedAMPM = moment(nextTrain, "HH:mm").format("h:mm a");
+      console.log(formattedAMPM);
+
 
       // create a new table row
       var newTableRow = $("<tr>");
@@ -107,7 +110,7 @@ $("#add-train").on("click", function() {
       $("<td>" + snapshot.val().name + "</td>" +
       "<td>" + snapshot.val().destination + "</td>" +
       "<td>" + snapshot.val().frequency + "</td>" +
-      "<td>" + nextTrain + "</td>"+
+      "<td>" + formattedAMPM + "</td>"+
       "<td>" + minutesAway + "</td>");
 
       // append the row and data to the table body to display on the page
@@ -121,12 +124,3 @@ $("#add-train").on("click", function() {
       // firstTrain = "";
 
 });
-
-// function convertTimes() {
-//   var timeInput = (moment(snapshot.val().firstTrain, "HH:mm Z"));
-//
-//   if (timeInput.isValid) {
-//   console.log(timeInput);
-//   return timeInput;
-// }
-// }
