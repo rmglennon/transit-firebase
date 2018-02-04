@@ -1,4 +1,4 @@
-// Initialize Firebase
+// initialize Firebase
 var config = {
   apiKey: "AIzaSyC1-lfMm-ICxtXmyZYMaB8kS4it_jaZODI",
   authDomain: "transit-schedules.firebaseapp.com",
@@ -13,7 +13,7 @@ firebase.initializeApp(config);
 // create a variable to reference the Firebase database
 var database = firebase.database();
 
-// create variables to reference transit inputs
+// create variables to reference train inputs
 // initialize to avoid errors on load
 
 var name = "";
@@ -21,10 +21,13 @@ var destination = "";
 var frequency = "";
 var firstTrain = "";
 
-
+// run when the form is submitted
 $("#train-form").on("submit", function() {
+
   // avoid reloading page
 	event.preventDefault();
+
+  // make sure inputs are valid before submitting
   if (!validateForm()) {
     return false;
   }
@@ -49,14 +52,12 @@ $("#train-form").on("submit", function() {
 		firstTrain: firstTrain
 	});
 
-  // TODO: clear out text boxes on submit
+  // clear values in the form when successfully submitted
   $("#train-form")[0].reset();
-  //document.getElementById("train-form").reset();
-  // resetForm.reset();
 
 });
 
-
+// run when a new child is added
  database.ref().on("child_added", function(snapshot) {
 
  	    // log all the snapshot values
@@ -65,23 +66,23 @@ $("#train-form").on("submit", function() {
       console.log("snapshot frequency: " + snapshot.val().frequency);
       console.log("snapshot first train: " + snapshot.val().firstTrain);
 
-      // use moment.js to calculate the train times
+      // use moment.js to calculate the train times by calculating the entire day's schedule
 
       // make variables pointing to database snapshot values for simplicity
       var freq = snapshot.val().frequency;
       var initialTime = snapshot.val().firstTrain;
 
+      // create a moment for initial time and format it
       var timeMoment = moment(initialTime, "HH:mm");
 
       // create a moment for the time at the end of the day
       var endOfDay = moment("23:59", "HH:mm");
 
-      // creare an empty array to hold all train schedules
+      // creare an empty array to hold all train departure times for the day
       var timetable = [];
 
-      var now = moment("12:43", "HH:mm");
-
       // create a timetable array for the day by adding frequency to first train time
+      // Note: this assumes the train runs at the same frequency all day
       for (var i = timeMoment; i.isSameOrBefore(endOfDay); i.add(freq, "minutes")) {
         var times = i.format("HH:mm");
         timetable.push(times);
@@ -89,9 +90,13 @@ $("#train-form").on("submit", function() {
 
       console.log(timetable);
 
-      var now = moment("18:43", "HH:mm");
-      var futureTrains = [];
+      // TODO: verify this uses the current time
       // create a variable representing now as a new moment
+      var now = moment("18:43", "HH:mm");
+
+      // create a variable to hold trains that depart after the current time
+      var futureTrains = [];
+
       // only look for trains in the future and find next one
       for (var i = 0; i < timetable.length; i++) {
 
@@ -99,16 +104,20 @@ $("#train-form").on("submit", function() {
           futureTrains.push(timetable[i]);
         }
       }
+
       console.log(futureTrains);
+      // the next train is the first one [0] in the array of departures remaining for the day
       var nextTrain = futureTrains[0];
       console.log(nextTrain);
 
+      // use moment.js to calculate the difference between now and the next train and at what time it will depart (formatted in AM/PM style)
       var minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes");
       console.log(minutesAway);
 
       var formattedAMPM = moment(nextTrain, "HH:mm").format("h:mm a");
       console.log(formattedAMPM);
 
+      // update the user interface list of upcoming trains
 
       // create a new table row
       var newTableRow = $("<tr>");
@@ -126,7 +135,10 @@ $("#train-form").on("submit", function() {
 
 });
 
+// validate the items on the train input form
+// "require" is set on the html fields to ensure there is an input
 function validateForm() {
+  // collect the train input value and split it at the :
   var firstTrainTimes = $("#first-train").val().trim().split(":");
 
   if (!validateFirstTrainTime(firstTrainTimes[0], firstTrainTimes[1])) {
@@ -135,6 +147,8 @@ function validateForm() {
 
   return true;
 }
+
+// validate that the hours and minutes are within expected range
 
 function validateFirstTrainTime(hours, minutes) {
   if (!((hours >= 00 || hours >= 0) && (hours <= 23))) {
