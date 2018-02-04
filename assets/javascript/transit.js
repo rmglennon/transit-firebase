@@ -64,35 +64,41 @@ $("#add-train").on("click", function() {
       var freq = snapshot.val().frequency;
       var initialTime = snapshot.val().firstTrain;
 
-      var timeCalc = moment(initialTime, "HH:mm");
-      // timecalc.add(freq, "m");
-      //console.log(timecalc.format("HH:mm"));
+      var timeMoment = moment(initialTime, "HH:mm");
 
       // create a moment for the time at the end of the day
       var endOfDay = moment("23:59", "HH:mm");
 
-      // create a loop of all train times during the day
-      // increment by the frequency of trains
-      for (var i = timeCalc; i.isBefore(endOfDay); i.add(freq, "minutes")) {
-        console.log(i.format("HH:mm"));
+      // creare an empty array to hold all train schedules
+      var timetable = [];
+
+      var now = moment("12:43", "HH:mm");
+
+      // create a timetable array for the day by adding frequency to first train time
+      for (var i = timeMoment; i.isSameOrBefore(endOfDay); i.add(freq, "minutes")) {
+        var times = i.format("HH:mm");
+        timetable.push(times);
       }
 
-      // var nextTrain = moment(parsed).add((snapshot.val().frequency, "m"));
-      // console.log(JSON.stringify(nextTrain));
-      // console.log("i am first train: " + snapshot.val().firstTrain);
+      console.log(timetable);
 
-      // var anotherTrain = moment(snapshot.val().firstTrain).add(20, "minutes");
-      // console.log("parsed 2: " + JSON.stringify(anotherTrain));
+      var now = moment("18:43", "HH:mm");
+      var futureTrains = [];
+      // create a variable representing now as a new moment
+      // only look for trains in the future and find next one
+      for (var i = 0; i < timetable.length; i++) {
 
-      // var test = moment(timeString).format(timeFormat);
-      // var test2 = moment(timeInput, timeFormat);
-      // console.log(test2);
+        if (moment(timetable[i], "HH:mm").isAfter(now)) {
+          futureTrains.push(timetable[i]);
+        }
+      }
+      console.log(futureTrains);
+      var nextTrain = futureTrains[0];
+      console.log(nextTrain);
 
-      // console.log(moment(snapshot.val().firstTrain).add(snapshot.val().frequency, "minutes"));
+      var minutesAway = moment(nextTrain, "HH:mm").diff(now, "minutes");
+      console.log(minutesAway);
 
-      // var monthsWorked = moment().diff(moment(snapshot.val().employeeStart), "months");
-      //
-      // var totalBilled = monthsWorked * snapshot.val().employeeRate;
 
       // create a new table row
       var newTableRow = $("<tr>");
@@ -101,8 +107,8 @@ $("#add-train").on("click", function() {
       $("<td>" + snapshot.val().name + "</td>" +
       "<td>" + snapshot.val().destination + "</td>" +
       "<td>" + snapshot.val().frequency + "</td>" +
-      "<td>" + "next arrival" + "</td>"+
-      "<td>" + "minutes away" + "</td>");
+      "<td>" + nextTrain + "</td>"+
+      "<td>" + minutesAway + "</td>");
 
       // append the row and data to the table body to display on the page
       newTableRow.append(newTableData);
