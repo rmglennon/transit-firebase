@@ -1,9 +1,53 @@
+body {
+  background-image: url("../images/round.png");
+}
+
 #train-inputs {
-  margin-top: 20px;
-  border: 2px solid black;
+  margin-top: 30px;
+  border: 2px solid #AA7E7E;
 }
 
 #train-table {
   margin-bottom: 20px;
-  border: 2px solid black;
+  border: 2px solid #AA7E7E;
+}
+
+.jumbotron {
+  background-color: #F2DCDC;
+  color: black;
+  border: 2px solid #AA7E7E;
+  margin-top: 20px;
+}
+
+#train-table,
+#train-form {
+  background-color: white;
+}
+
+#train-form {
+  padding: 30px;
+}
+
+#train-table{
+  padding: 30px;
+}
+
+#instructions,
+#disclaimer {
+  font-size: 12px;
+}
+
+#last-div {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.btn {
+  background-color: #AA7E7E;
+  border-color: #815858;
+}
+
+.btn:hover {
+  background-color: #A88C8C;
+  border-color: #F2DCDC;
 }
